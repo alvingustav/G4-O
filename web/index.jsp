@@ -190,14 +190,14 @@
                     if (isLoggedIn != null && isLoggedIn) {
                 %>
                     <li><a href="#">My Books</a></li>
-                    <li><a href="catalogue.jsp">Catalogue</a></li>
+                    <li><a href="${pageContext.request.contextPath}/catalogue">Catalogue</a></li>
                     <li><span class="username">Welcome, <%= username %></span></li>
                     <li><a href="logout" class="btn-logout">Logout</a></li>
                 <%
                     } else {
                 %>
                     <li><a href="#">My Books</a></li>
-                    <li><a href="catalogue.jsp">Catalogue</a></li>
+                    <li><a href="${pageContext.request.contextPath}/catalogue">Catalogue</a></li>
                     <li><a href="login.jsp" class="btn-login">Log In</a></li>
                     <li><a href="signup.jsp" class="btn-signup">Sign Up</a></li>
                 <%

@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="model.Buku" %>
+<%@ page import="java.util.List" %>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -48,70 +50,10 @@
         .navbar-nav a:hover {
             color: #d9d9d9;
         }
-        
-        .btn-login {
-            background-color: green;
-            padding: 5px 7px 5px 7px;
-            border-radius: 8px;
-        }
-        
-        .btn-signup {
-            background-color: blueviolet;
-            padding: 5px 7px 5px 7px;
-            border-radius: 8px;
-        }
-
-        .btn-logout {
-            background-color: #dc3545;
-            padding: 5px 7px 5px 7px;
-            border-radius: 8px;
-        }
-
-        .btn-logout:hover {
-            background-color: #c82333;
-        }
-
-        .username {
-            color: #fff;
-            margin-right: 15px;
-        }
-        
         .content {
             max-width: 1200px;
             margin: 30px auto;
             padding: 0 20px;
-        }
-        .search-bar {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .search-bar input[type="text"] {
-            width: 300px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .search-bar button {
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            margin-left: 10px;
-            border-radius: 4px;
-        }
-        .search-bar button:hover {
-            background-color: #0056b3;
-        }
-        .search-bar .advanced-search {
-            margin-left: 20px;
-            color: #007bff;
-            cursor: pointer;
-        }
-        .search-bar .advanced-search:hover {
-            text-decoration: underline;
         }
         .book-list {
             display: flex;
@@ -167,14 +109,14 @@
                 %>
                     <li><a href="index.jsp">Home</a></li>
                     <li><a href="#">My Books</a></li>
-                    <li><a href="catalogue.jsp">Catalogue</a></li>
+                    <li><a href="${pageContext.request.contextPath}/catalogue">Catalogue</a></li>
                     <li><span class="username">Welcome, <%= username %></span></li>
                     <li><a href="logout" class="btn-logout">Logout</a></li>
                 <%
                     } else {
                 %>
                     <li><a href="index.jsp">Home</a></li>
-                    <li><a href="catalogue.jsp">Catalogue</a></li>
+                    <li><a href="${pageContext.request.contextPath}/catalogue">Catalogue</a></li>
                     <li><a href="login.jsp" class="btn-login">Log In</a></li>
                     <li><a href="signup.jsp" class="btn-signup">Sign Up</a></li>
                 <%
@@ -187,62 +129,26 @@
     <div class="content">
         <h2>Catalogue</h2>
         
-        <div class="search-bar">
-            <input type="text" placeholder="Search for books...">
-            <button><i class="fas fa-search"></i> Search</button>
-            <span class="advanced-search">Advanced Search</span>
-        </div>
-        
         <div class="book-list">
+            <%
+                List<Buku> bukuList = (List<Buku>) request.getAttribute("bukuList");
+                if (bukuList != null) {
+                    for (Buku buku : bukuList) {
+            %>
             <div class="book-card">
-                <img src="control-your-mind.jpg" alt="Control Your Mind and Master Your Feelings">
-                <h4>Control Your Mind and Master Your Feelings</h4>
-                <p>Eric Robertson</p>
-                <button onclick="<%= isLoggedIn != null && isLoggedIn ? "window.location.href='read-book.jsp'" : "window.location.href='login.jsp'" %>">
-                    <%= isLoggedIn != null && isLoggedIn ? "Read Now" : "Login to Read" %>
-                </button>
+                <img src="<%= buku.getGambarUrl() %>" alt="<%= buku.getJudul() %>">
+                <h4><%= buku.getJudul() %></h4>
+                <p><%= buku.getPenulis() %></p>
+                <button>Borrow Now</button>
             </div>
-
-            <div class="book-card">
-                <img src="atomic-habits.jpg" alt="Atomic Habits">
-                <h4>Atomic Habits</h4>
-                <p>James Clear</p>
-                <button>Preview Only</button>
-            </div>
-
-            <div class="book-card">
-                <img src="twisted-lies.jpg" alt="Twisted Lies">
-                <h4>Twisted Lies</h4>
-                <p>Ana Huang</p>
-                <button>Not in Library</button>
-            </div>
-
-            <div class="book-card">
-                <img src="psychology-of-money.jpg" alt="The Psychology of Money">
-                <h4>The Psychology of Money</h4>
-                <p>Morgan Housel</p>
-                <button onclick="<%= isLoggedIn != null && isLoggedIn ? "window.location.href='read-book.jsp'" : "window.location.href='login.jsp'" %>">
-                    <%= isLoggedIn != null && isLoggedIn ? "Read Now" : "Login to Read" %>
-                </button>
-            </div>
-
-            <div class="book-card">
-                <img src="art-of-war.jpg" alt="The Art of War">
-                <h4>The Art of War</h4>
-                <p>Sun Tzu</p>
-                <button onclick="<%= isLoggedIn != null && isLoggedIn ? "window.location.href='read-book.jsp'" : "window.location.href='login.jsp'" %>">
-                    <%= isLoggedIn != null && isLoggedIn ? "Read Now" : "Login to Read" %>
-                </button>
-            </div>
-
-            <div class="book-card">
-                <img src="rich-dad-poor-dad.jpg" alt="Rich Dad Poor Dad">
-                <h4>Rich Dad Poor Dad</h4>
-                <p>Robert T. Kiyosaki</p>
-                <button onclick="<%= isLoggedIn != null && isLoggedIn ? "window.location.href='borrow-book.jsp'" : "window.location.href='login.jsp'" %>">
-                    <%= isLoggedIn != null && isLoggedIn ? "Borrow Now" : "Login to Borrow" %>
-                </button>
-            </div>
+            <%
+                    }
+                } else {
+            %>
+            <p>No books available.</p>
+            <%
+                }
+            %>
         </div>
     </div>
 </body>
